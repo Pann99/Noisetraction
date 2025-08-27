@@ -1,0 +1,669 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>Noisetraction</title>
+
+  {{-- Tailwind CSS --}}
+  <script src="https://cdn.tailwindcss.com"></script>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600;700&display=swap" rel="stylesheet">
+
+  <link rel="icon" href="favicon.ico">
+
+    <style>
+        .sound-button {
+            transition: all 0.3s ease;
+        }
+        .sound-button.active {
+            transform: scale(1.2);
+        }
+        .sound-item {
+            transition: all 0.3s ease;
+        }
+        .sound-item.active {
+            background: rgba(255, 255, 255, 0.1);
+            border-radius: 16px;
+            padding: 16px;
+        }
+        .volume-slider {
+            transition: opacity 0.3s ease, transform 0.3s ease;
+            background: #486699;
+            height: 4px;
+            border-radius: 2px;
+            outline: none;
+            appearance: none;
+        }
+        .volume-slider::-webkit-slider-thumb {
+            appearance: none;
+            width: 16px;
+            height: 16px;
+            background: white;
+            border-radius: 50%;
+            cursor: pointer;
+            box-shadow: 0 2px 4px rgba(0,0,0,0.2);
+        }
+        .volume-slider::-moz-range-thumb {
+            width: 16px;
+            height: 16px;
+            background: white;
+            border-radius: 50%;
+            cursor: pointer;
+            border: none;
+            box-shadow: 0 2px 4px rgba(0,0,0,0.2);
+        }
+        .sound-label {
+            opacity: 0;
+            transform: translateY(10px);
+            transition: all 0.3s ease;
+        }
+        .sound-item.active .sound-label {
+            opacity: 1;
+            transform: translateY(0);
+        }
+        .volume-control {
+            opacity: 0;
+            transform: translateY(10px);
+            transition: all 0.3s ease;
+        }
+        .sound-item.active .volume-control {
+            opacity: 1;
+            transform: translateY(0);
+        }
+    </style>
+
+</head>
+<body class="bg-[#27416f] text-white font-sans flex flex-col min-h-screen">
+
+  <!-- Include Navbar Component -->
+  <header class="fixed top-0 left-0 right-0 w-full flex justify-center pt-6 pb-2 bg-[#27416f] z-50">
+    <div class="w-[90%] max-w-[1408px] flex justify-between items-center bg-[#27416f] bg-[url('images/rectangle-1.svg')] bg-cover h-[75px] px-8 rounded-[30px] shadow-[0_4px_12px_rgba(0,0,0,0.3)]">
+        <a href="home.html" class="text-2xl italic font-bold text-white">
+            Noisetraction
+        </a>
+        <div class="flex items-center space-x-6">
+            <a href="landing.html" class="font-bold text-[15px] text-white">How it Works</a>
+            <a href="main.html" class="bg-[#647DAB] text-white font-bold px-8 py-2 rounded-full text-[15px]">Try it</a>
+        </div>
+    </div>
+</header>
+
+<!-- Main Content -->
+    <main class="flex-grow w-full px-6 py-12 flex justify-center pt-40">
+        <div class="w-full max-w-[1408px] relative">
+            
+            <!-- Nature Section -->
+            <div class="mb-16">
+                <h2 class="text-[32px] font-semibold leading-[50px] mb-8 text-center">Nature</h2>
+                <div class="grid grid-cols-4 gap-8 justify-center max-w-[800px] mx-auto">
+                    <!-- Thunderstorm -->
+                    <div class="sound-item flex flex-col items-center transition-all duration-300" data-sound="thunderstorm">
+                        <div class="sound-button w-[100px] h-[100px] bg-[#486699] rounded-full flex items-center justify-center cursor-pointer hover:bg-opacity-80 transition-all duration-300">
+                            <img src="images/thunder.png" class="h-[70px]">
+                        </div>
+                        <div class="sound-label mt-3 text-center">
+                            <p class="text-white font-medium">Thunderstorm</p>
+                        </div>
+                        <div class="volume-control mt-3 flex items-center gap-2">
+                            <input 
+                                type="range" 
+                                min="0" 
+                                max="100" 
+                                value="100" 
+                                class="volume-slider flex-1 h-1" 
+                                oninput="updateVolumeIcon(this)">
+
+                            <img src="icons/mute.svg" class="volume-icon-mute w-4 h-4 hidden">
+                            <img src="icons/half-volume.svg" class="volume-icon-half w-4 h-4 hidden">
+                            <img src="icons/volume.svg" class="volume-icon-full w-4 h-4 block">
+                        </div>
+                    </div>
+
+                    <!-- Rain -->
+                    <div class="sound-item flex flex-col items-center transition-all duration-300" data-sound="rain">
+                        <div class="sound-button w-[100px] h-[100px] bg-[#486699] rounded-full flex items-center justify-center cursor-pointer hover:bg-opacity-80 transition-all duration-300">
+                            <img src="images/rain.png" class="h-[56px]">
+                        </div>
+                        <div class="sound-label mt-3 text-center">
+                            <p class="text-white font-medium">Rain</p>
+                        </div>
+                        <div class="volume-control mt-3 flex items-center gap-2">
+                            <input 
+                                type="range" 
+                                min="0" 
+                                max="100" 
+                                value="100" 
+                                class="volume-slider flex-1 h-1" 
+                                oninput="updateVolumeIcon(this)">
+
+                            <img src="icons/mute.svg" class="volume-icon-mute w-4 h-4 hidden">
+                            <img src="icons/half-volume.svg" class="volume-icon-half w-4 h-4 hidden">
+                            <img src="icons/volume.svg" class="volume-icon-full w-4 h-4 block">
+                        </div>
+                    </div>
+
+                    <!-- Wind -->
+                    <div class="sound-item flex flex-col items-center transition-all duration-300" data-sound="wind">
+                        <div class="sound-button w-[100px] h-[100px] bg-[#486699] rounded-full flex items-center justify-center cursor-pointer hover:bg-opacity-80 transition-all duration-300">
+                            <img src="images/wind.png" class="h-[55px] ml-1">
+                        </div>
+                        <div class="sound-label mt-3 text-center">
+                            <p class="text-white font-medium">Wind</p>
+                        </div>
+                        <div class="volume-control mt-3 flex items-center gap-2">
+                            <input 
+                                type="range" 
+                                min="0" 
+                                max="100" 
+                                value="100" 
+                                class="volume-slider flex-1 h-1" 
+                                oninput="updateVolumeIcon(this)">
+
+                            <img src="icons/mute.svg" class="volume-icon-mute w-4 h-4 hidden">
+                            <img src="icons/half-volume.svg" class="volume-icon-half w-4 h-4 hidden">
+                            <img src="icons/volume.svg" class="volume-icon-full w-4 h-4 block">
+                        </div>
+                    </div>
+
+                    <!-- SummerNight -->
+                    <div class="sound-item flex flex-col items-center transition-all duration-300" data-sound="summernight">
+                        <div class="sound-button w-[100px] h-[100px] bg-[#486699] rounded-full flex items-center justify-center cursor-pointer hover:bg-opacity-80 transition-all duration-300">
+                            <img src="images/moon.png" class="h-[48px] ml-[0.1rem]">
+                        </div>
+                        <div class="sound-label mt-3 text-center">
+                            <p class="text-white font-medium">Summer Night</p>
+                        </div>
+                        <div class="volume-control mt-3 flex items-center gap-2">
+                            <input 
+                                type="range" 
+                                min="0" 
+                                max="100" 
+                                value="100" 
+                                class="volume-slider flex-1 h-1" 
+                                oninput="updateVolumeIcon(this)">
+
+                            <img src="icons/mute.svg" class="volume-icon-mute w-4 h-4 hidden">
+                            <img src="icons/half-volume.svg" class="volume-icon-half w-4 h-4 hidden">
+                            <img src="icons/volume.svg" class="volume-icon-full w-4 h-4 block">
+                        </div>
+                    </div>
+
+                    <!-- Bonfire -->
+                    <div class="sound-item flex flex-col items-center transition-all duration-300" data-sound="bonfire">
+                        <div class="sound-button w-[100px] h-[100px] bg-[#486699] rounded-full flex items-center justify-center cursor-pointer hover:bg-opacity-80 transition-all duration-300">
+                            <img src="images/fire.png" class="h-[53px] ml-0,5">
+                        </div>
+                        <div class="sound-label mt-3 text-center">
+                            <p class="text-white font-medium">Bonfire</p>
+                        </div>
+                        <div class="volume-control mt-3 flex items-center gap-2">
+                            <input 
+                                type="range" 
+                                min="0" 
+                                max="100" 
+                                value="100" 
+                                class="volume-slider flex-1 h-1" 
+                                oninput="updateVolumeIcon(this)">
+
+                            <img src="icons/mute.svg" class="volume-icon-mute w-4 h-4 hidden">
+                            <img src="icons/half-volume.svg" class="volume-icon-half w-4 h-4 hidden">
+                            <img src="icons/volume.svg" class="volume-icon-full w-4 h-4 block">
+                        </div>
+                    </div>
+
+                    <!-- Forest -->
+                    <div class="sound-item flex flex-col items-center transition-all duration-300" data-sound="forest">
+                        <div class="sound-button w-[100px] h-[100px] bg-[#486699] rounded-full flex items-center justify-center cursor-pointer hover:bg-opacity-80 transition-all duration-300">
+                            <img src="images/forest.png" class="h-[57px] ml-1,5">
+                        </div>
+                        <div class="sound-label mt-3 text-center">
+                            <p class="text-white font-medium">Forest</p>
+                        </div>
+                        <div class="volume-control mt-3 flex items-center gap-2">
+                            <input 
+                                type="range" 
+                                min="0" 
+                                max="100" 
+                                value="100" 
+                                class="volume-slider flex-1 h-1" 
+                                oninput="updateVolumeIcon(this)">
+
+                            <img src="icons/mute.svg" class="volume-icon-mute w-4 h-4 hidden">
+                            <img src="icons/half-volume.svg" class="volume-icon-half w-4 h-4 hidden">
+                            <img src="icons/volume.svg" class="volume-icon-full w-4 h-4 block">
+                        </div>
+                    </div>
+
+                    <!-- Water -->
+                    <div class="sound-item flex flex-col items-center transition-all duration-300" data-sound="water">
+                        <div class="sound-button w-[100px] h-[100px] bg-[#486699] rounded-full flex items-center justify-center cursor-pointer hover:bg-opacity-80 transition-all duration-300">
+                            <img src="images/water.png" class="h-[55px]">
+                        </div>
+                        <div class="sound-label mt-3 text-center">
+                            <p class="text-white font-medium">Water</p>
+                        </div>
+                        <div class="volume-control mt-3 flex items-center gap-2">
+                            <input 
+                                type="range" 
+                                min="0" 
+                                max="100" 
+                                value="100" 
+                                class="volume-slider flex-1 h-1" 
+                                oninput="updateVolumeIcon(this)">
+
+                            <img src="icons/mute.svg" class="volume-icon-mute w-4 h-4 hidden">
+                            <img src="icons/half-volume.svg" class="volume-icon-half w-4 h-4 hidden">
+                            <img src="icons/volume.svg" class="volume-icon-full w-4 h-4 block">
+                        </div>
+                    </div>
+
+                    <!-- Coffee Shop -->
+                    <div class="sound-item flex flex-col items-center transition-all duration-300" data-sound="coffee">
+                        <div class="sound-button w-[100px] h-[100px] bg-[#486699] rounded-full flex items-center justify-center cursor-pointer hover:bg-opacity-80 transition-all duration-300">
+                            <img src="images/coffee.png" class="h-[58px] mr-1">
+                        </div>
+                        <div class="sound-label mt-3 text-center">
+                            <p class="text-white font-medium">Coffee Shop</p>
+                        </div>
+                        <div class="volume-control mt-3 flex items-center gap-2">
+                            <input 
+                                type="range" 
+                                min="0" 
+                                max="100" 
+                                value="100" 
+                                class="volume-slider flex-1 h-1" 
+                                oninput="updateVolumeIcon(this)">
+
+                            <img src="icons/mute.svg" class="volume-icon-mute w-4 h-4 hidden">
+                            <img src="icons/half-volume.svg" class="volume-icon-half w-4 h-4 hidden">
+                            <img src="icons/volume.svg" class="volume-icon-full w-4 h-4 block">
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Musical Instruments Section -->
+            <div class="mb-8">
+                <h2 class="text-[32px] font-semibold leading-[50px] mb-8 text-center">Musical Instruments</h2>
+                <div class="grid grid-cols-4 gap-8 justify-center max-w-[800px] mx-auto">
+                    <!-- Bali -->
+                    <div class="sound-item flex flex-col items-center transition-all duration-300" data-sound="bali">
+                        <div class="sound-button w-[100px] h-[100px] bg-[#486699] rounded-full flex items-center justify-center cursor-pointer hover:bg-opacity-80 transition-all duration-300">
+                            <img src="images/bali.png" class="h-[55px] ml-[0.1rem]">
+                        </div>
+                        <div class="sound-label mt-3 text-center">
+                            <p class="text-white font-medium">Bali</p>
+                        </div>
+                        <div class="volume-control mt-3 flex items-center gap-2">
+                            <input 
+                                type="range" 
+                                min="0" 
+                                max="100" 
+                                value="100" 
+                                class="volume-slider flex-1 h-1" 
+                                oninput="updateVolumeIcon(this)">
+
+                            <img src="icons/mute.svg" class="volume-icon-mute w-4 h-4 hidden">
+                            <img src="icons/half-volume.svg" class="volume-icon-half w-4 h-4 hidden">
+                            <img src="icons/volume.svg" class="volume-icon-full w-4 h-4 block">
+                        </div>
+                    </div>
+
+                    <!-- Jawa -->
+                    <div class="sound-item flex flex-col items-center transition-all duration-300" data-sound="jawa">
+                        <div class="sound-button w-[100px] h-[100px] bg-[#486699] rounded-full flex items-center justify-center cursor-pointer hover:bg-opacity-80 transition-all duration-300">
+                            <img src="images/jawa.png" class="h-[50px] ml-1 mb-1">
+                        </div>
+                        <div class="sound-label mt-3 text-center">
+                            <p class="text-white font-medium">Jawa</p>
+                        </div>
+                        <div class="volume-control mt-3 flex items-center gap-2">
+                            <input 
+                                type="range" 
+                                min="0" 
+                                max="100" 
+                                value="100" 
+                                class="volume-slider flex-1 h-1" 
+                                oninput="updateVolumeIcon(this)">
+
+                            <img src="icons/mute.svg" class="volume-icon-mute w-4 h-4 hidden">
+                            <img src="icons/half-volume.svg" class="volume-icon-half w-4 h-4 hidden">
+                            <img src="icons/volume.svg" class="volume-icon-full w-4 h-4 block">
+                        </div>
+                    </div>
+
+                    <!-- Sunda -->
+                    <div class="sound-item flex flex-col items-center transition-all duration-300" data-sound="sunda">
+                        <div class="sound-button w-[100px] h-[100px] bg-[#486699] rounded-full flex items-center justify-center cursor-pointer hover:bg-opacity-80 transition-all duration-300">
+                            <img src="images/flute.png" class="h-[58px]">
+                        </div>
+                        <div class="sound-label mt-3 text-center">
+                            <p class="text-white font-medium">Sunda</p>
+                        </div>
+                        <div class="volume-control mt-3 flex items-center gap-2">
+                            <input 
+                                type="range" 
+                                min="0" 
+                                max="100" 
+                                value="100" 
+                                class="volume-slider flex-1 h-1" 
+                                oninput="updateVolumeIcon(this)">
+
+                            <img src="icons/mute.svg" class="volume-icon-mute w-4 h-4 hidden">
+                            <img src="icons/half-volume.svg" class="volume-icon-half w-4 h-4 hidden">
+                            <img src="icons/volume.svg" class="volume-icon-full w-4 h-4 block">
+                        </div>
+                    </div>
+
+                    <!-- Dayak -->
+                    <div class="sound-item flex flex-col items-center transition-all duration-300" data-sound="dayak">
+                        <div class="sound-button w-[100px] h-[100px] bg-[#486699] rounded-full flex items-center justify-center cursor-pointer hover:bg-opacity-80 transition-all duration-300">
+                            <img src="images/dayak.png" class="h-[60px]">
+                        </div>
+                        <div class="sound-label mt-3 text-center">
+                            <p class="text-white font-medium">Dayak</p>
+                        </div>
+                        <div class="volume-control mt-3 flex items-center gap-2">
+                            <input 
+                                type="range" 
+                                min="0" 
+                                max="100" 
+                                value="100" 
+                                class="volume-slider flex-1 h-1" 
+                                oninput="updateVolumeIcon(this)">
+
+                            <img src="icons/mute.svg" class="volume-icon-mute w-4 h-4 hidden">
+                            <img src="icons/half-volume.svg" class="volume-icon-half w-4 h-4 hidden">
+                            <img src="icons/volume.svg" class="volume-icon-full w-4 h-4 block">
+                        </div>
+                    </div>
+
+                    
+                </div>
+            </div>
+
+                <div class="grid grid-cols-3 gap-8 justify-center max-w-[800px] mx-auto">
+                <!-- Guitar -->
+                    <div class="sound-item flex flex-col items-center transition-all duration-300" data-sound="guitar">
+                        <div class="sound-button w-[100px] h-[100px] bg-[#486699] rounded-full flex items-center justify-center cursor-pointer hover:bg-opacity-80 transition-all duration-300">
+                            <img src="images/guitar.png" class="h-[58px]">
+                        </div>
+                        <div class="sound-label mt-3 text-center">
+                            <p class="text-white font-medium">Guitar</p>
+                        </div>
+                        <div class="volume-control mt-3 flex items-center gap-2">
+                            <input 
+                                type="range" 
+                                min="0" 
+                                max="100" 
+                                value="100" 
+                                class="volume-slider flex-1 h-1" 
+                                oninput="updateVolumeIcon(this)">
+
+                            <img src="icons/mute.svg" class="volume-icon-mute w-4 h-4 hidden">
+                            <img src="icons/half-volume.svg" class="volume-icon-half w-4 h-4 hidden">
+                            <img src="icons/volume.svg" class="volume-icon-full w-4 h-4 block">
+                        </div>
+                    </div>
+
+                    <!-- Violin -->
+                    <div class="sound-item flex flex-col items-center transition-all duration-300" data-sound="biola">
+                        <div class="sound-button w-[100px] h-[100px] bg-[#486699] rounded-full flex items-center justify-center cursor-pointer hover:bg-opacity-80 transition-all duration-300">
+                            <img src="images/violin.png" class="h-[58px]">
+                        </div>
+                        <div class="sound-label mt-3 text-center">
+                            <p class="text-white font-medium">Violin</p>
+                        </div>
+                        <div class="volume-control mt-3 flex items-center gap-2">
+                            <input 
+                                type="range" 
+                                min="0" 
+                                max="100" 
+                                value="100" 
+                                class="volume-slider flex-1 h-1" 
+                                oninput="updateVolumeIcon(this)">
+
+                            <img src="icons/mute.svg" class="volume-icon-mute w-4 h-4 hidden">
+                            <img src="icons/half-volume.svg" class="volume-icon-half w-4 h-4 hidden">
+                            <img src="icons/volume.svg" class="volume-icon-full w-4 h-4 block">
+                        </div>
+                    </div>
+
+                    <!-- Piano -->
+                    <div class="sound-item flex flex-col items-center transition-all duration-300" data-sound="piano">
+                        <div class="sound-button w-[100px] h-[100px] bg-[#486699] rounded-full flex items-center justify-center cursor-pointer hover:bg-opacity-80 transition-all duration-300">
+                            <img src="images/piano.png" class="h-[53px] ml-1">
+                        </div>
+                        <div class="sound-label mt-3 text-center">
+                            <p class="text-white font-medium">Piano</p>
+                        </div>
+                        <div class="volume-control mt-3 flex items-center gap-2">
+                            <input 
+                                type="range" 
+                                min="0" 
+                                max="100" 
+                                value="100" 
+                                class="volume-slider flex-1 h-1" 
+                                oninput="updateVolumeIcon(this)">
+
+                            <img src="icons/mute.svg" class="volume-icon-mute w-4 h-4 hidden">
+                            <img src="icons/half-volume.svg" class="volume-icon-half w-4 h-4 hidden">
+                            <img src="icons/volume.svg" class="volume-icon-full w-4 h-4 block">
+                        </div>
+                    </div>
+                </div>
+        </div>
+    </main>
+
+  <!-- Footer sticky -->
+  <footer class="bg-[#27416f] shadow-[inset_0_4px_8px_rgba(0,0,0,0.25)] py-4">
+    <div class="max-w-screen-xl mx-auto text-center">
+      <p class="text-2xl italic font-bold">Noisetraction</p>
+    </div>
+  </footer>
+
+  <script>
+        // Sound Management System - BARU
+        class SoundManager {
+            constructor() {
+                this.audioObjects = {}; // Store audio objects
+                this.initializeAudio();
+            }
+
+            initializeAudio() {
+                // Initialize audio objects for each sound
+                const soundItems = document.querySelectorAll('.sound-item');
+                
+                soundItems.forEach(item => {
+                    const soundName = item.dataset.sound;
+                    this.audioObjects[soundName] = {
+                        audio: null,
+                        isLoaded: false
+                    };
+                });
+            }
+
+            async loadAudio(soundName) {
+                if (!this.audioObjects[soundName].isLoaded) {
+                    try {
+                        // Path ke file audio - untuk HTML statis, gunakan jalur relatif
+                        const audioPath = `sounds/${soundName}.mp3`; 
+                        
+                        const audio = new Audio(audioPath);
+                        audio.loop = true; // Loop untuk ambient sounds
+                        audio.preload = 'metadata';
+                        
+                        // Wait for audio to load
+                        await new Promise((resolve, reject) => {
+                            audio.addEventListener('canplaythrough', resolve);
+                            audio.addEventListener('error', () => {
+                                reject(new Error(`Failed to load: ${audioPath}`));
+                            });
+                        });
+                        
+                        this.audioObjects[soundName].audio = audio;
+                        this.audioObjects[soundName].isLoaded = true;
+                        
+                        console.log(`Audio loaded: ${soundName}`);
+                        return true;
+                        
+                    } catch (error) {
+                        console.error(`Error loading audio for ${soundName}:`, error);
+                        alert(`File audio untuk ${soundName} tidak ditemukan!\nPastikan file ada di: sounds/${soundName}.mp3`);
+                        return false;
+                    }
+                }
+                return true;
+            }
+
+            async playSound(soundName) {
+                const audioObj = this.audioObjects[soundName];
+                
+                // Load audio if not loaded yet
+                if (!audioObj.isLoaded) {
+                    const loaded = await this.loadAudio(soundName);
+                    if (!loaded) return false;
+                }
+                
+                try {
+                    const audio = audioObj.audio;
+                    audio.currentTime = 0; // Reset to beginning
+                    await audio.play();
+                    console.log(`Playing: ${soundName}`);
+                    return true;
+                } catch (error) {
+                    console.error(`Error playing ${soundName}:`, error);
+                    return false;
+                }
+            }
+
+            pauseSound(soundName) {
+                const audioObj = this.audioObjects[soundName];
+                if (audioObj.isLoaded && audioObj.audio) {
+                    audioObj.audio.pause();
+                    console.log(`Paused: ${soundName}`);
+                }
+            }
+
+            setVolume(soundName, volume) {
+                const audioObj = this.audioObjects[soundName];
+                if (audioObj.isLoaded && audioObj.audio) {
+                    audioObj.audio.volume = volume;
+                    console.log(`Volume ${soundName}: ${Math.round(volume * 100)}%`);
+                }
+            }
+
+            stopAllSounds() {
+                Object.keys(this.audioObjects).forEach(soundName => {
+                    this.pauseSound(soundName);
+                });
+                console.log('All sounds stopped');
+            }
+        }
+
+        // Initialize sound manager
+        const soundManager = new SoundManager();
+
+        // Sound management - DIMODIFIKASI DARI CODE ASLI
+        const sounds = {};
+        const soundItems = document.querySelectorAll('.sound-item');
+
+        // Initialize sound items
+        soundItems.forEach(item => {
+            const soundName = item.dataset.sound;
+            const button = item.querySelector('.sound-button');
+            const volumeSlider = item.querySelector('.volume-slider');
+            
+            let isPlaying = false;
+            
+            // Button click handler - DIMODIFIKASI UNTUK AUDIO
+            button.addEventListener('click', async () => {
+                isPlaying = !isPlaying;
+                
+                if (isPlaying) {
+                    // Try to play sound
+                    const success = await soundManager.playSound(soundName);
+                    
+                    if (success) {
+                        // Activate button and show controls
+                        item.classList.add('active');
+                        button.classList.add('active');
+                        
+                        // Set initial volume
+                        const currentVolume = volumeSlider.value / 100;
+                        soundManager.setVolume(soundName, currentVolume);
+                        
+                        console.log(`Playing ${soundName} sound`);
+                    } else {
+                        // Reset if failed to play
+                        isPlaying = false;
+                    }
+                    
+                } else {
+                    // Stop sound
+                    soundManager.pauseSound(soundName);
+                    
+                    // Deactivate button and hide controls
+                    item.classList.remove('active');
+                    button.classList.remove('active');
+                    
+                    console.log(`Stopping ${soundName} sound`);
+                }
+            });
+            
+            // Volume slider handler - DIMODIFIKASI UNTUK AUDIO
+            volumeSlider.addEventListener('input', (e) => {
+                const volume = e.target.value / 100;
+                soundManager.setVolume(soundName, volume);
+                updateVolumeIcon(e.target);
+                
+                console.log(`Setting ${soundName} volume to ${Math.round(volume * 100)}%`);
+            });
+        });
+
+        // Keyboard shortcuts - DIMODIFIKASI UNTUK AUDIO
+        document.addEventListener('keydown', (e) => {
+            if (e.key === 'Escape') {
+                // Stop all sounds
+                soundManager.stopAllSounds();
+                
+                // Reset UI
+                soundItems.forEach(item => {
+                    const button = item.querySelector('.sound-button');
+                    
+                    item.classList.remove('active');
+                    button.classList.remove('active');
+                });
+                console.log('All sounds stopped');
+            }
+        });
+
+        // Updated volume icon function that works with all sliders - TETAP SAMA
+        function updateVolumeIcon(slider) {
+            // Find the parent volume-control div
+            const volumeControl = slider.closest('.volume-control');
+            
+            // Get all volume icons within this control
+            const muteIcon = volumeControl.querySelector('.volume-icon-mute');
+            const halfIcon = volumeControl.querySelector('.volume-icon-half');
+            const fullIcon = volumeControl.querySelector('.volume-icon-full');
+
+            // Reset all icons to hidden
+            muteIcon.classList.add('hidden');
+            halfIcon.classList.add('hidden');
+            fullIcon.classList.add('hidden');
+
+            // Show appropriate icon based on volume value
+            const value = parseInt(slider.value);
+            if (value === 0) {
+                muteIcon.classList.remove('hidden');
+            } else if (value > 0 && value < 65) {
+                halfIcon.classList.remove('hidden');
+            } else {
+                fullIcon.classList.remove('hidden');
+            }
+        }
+    </script>
+
+</body>
+</html>
